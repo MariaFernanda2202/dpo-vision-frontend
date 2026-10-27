@@ -1,53 +1,28 @@
-DPONet
+# DPO Vision 
 
-Desafio 6: Ferramenta de anonimização de documentos.
+## Descrição do Projeto
+O DPO Vision é um módulo avançado de análise de documentos impulsionado por Inteligência Artificial e OCR, projetado para atuar como uma ferramenta interna focada em compliance. O objetivo principal é otimizar as auditorias de conformidade com a LGPD para a DPOnet (https://dponet.com.br), automatizando a leitura, a busca semântica e a marcação visual de termos críticos em contratos e documentos digitalizados, reduzindo drasticamente o tempo de análise manual.
 
-Problema: 
-O problema proposto no desafio é a circulação de documentos que contenham informações sigilosas ou pessoais entre setores ou empresas. Isso torna o compartilhamento entre diferentes destinatários inviável ou arriscado. Pois não há como ter um controle sobre as informações do específicas do documento disponíveis para a leitura sem alterá-lo como um todo.
+## O Problema
+Atualmente, após a emissão de um parecer técnico sobre um contrato por uma pelo DAI, a validação das informações da LGPD exige que o auditor vasculhe o documento inteiro manualmente para encontrar a base daquele parecer ou termos específicos. Esse processo gera um consumo de tempo desnecessário e pouco escalável.
 
-Solução:
- A solução que pensamos foi a criação de uma ferramenta de escaneamento de arquivos (PDF) ligada a um agente de OCR e outro de LLM para extrair e mapear as informações contidas no documento. O usuário terá a opção de selecionar as informações que serão escondidas atrás de uma tarja. É importante ressaltar que o PDF precisa necessariamente ser rasterizado (transformar informações de texto em uma imagem) ao ser finalizado para que a informação seja realmente perdida.
+## A Solução
+Uma aplicação web onde o auditor faz o upload de contratos (incluindo PDFs escaneados) e define o contexto a ser filtrado. Através de OCR e busca semântica, o sistema processa o arquivo, localiza os trechos relevantes e retorna o documento visualmente grifado na própria tela, além de disponibilizar o download do PDF final com todas as marcações.
 
+## Principais Recursos
+- **Processamento de OCR Integrado:** Capacidade de extrair textos de PDFs convencionais e arquivos escaneados.
+- **Busca Semântica por Contexto:** Filtro inteligente que entende comandos específicos (ex: "identificar pontos sobre LGPD") utilizando IA, superando buscas simples por palavras-chave.
+- **Visualizador de PDF Interativo:** Interface web ágil e responsiva que renderiza as marcações visuais diretamente na tela do usuário.
+- **Exportação e Integração:** Função dedicada para baixar o documento processado e visualmente destacado.
 
-Exemplo de funcionamento:
-O usuário acessa a interface, realiza o envio do documento PDF, o sistema utiliza a tecnologia OCR para extrair as informações contidas no arquivo, utiliza uma LLM para assimilar e contextualizar essas informações, e oferece ao usuário a opção de selecionar um trecho para ser anonimizado. Após a escolha do usuário, o sistema cria uma cópia de imagem do arquivo e utiliza as coordenadas do trecho escolhido para esconder o conteúdo contido no arquivo, após o processo ser finalizado, disponibiliza a cópia anonimizada para download.
+##  Tecnologias e Bibliotecas Utilizadas
 
-Principais recursos da solução:
+### Frontend
+- **Vue.js:** Construção da interface em formato Saas, simulando como seria o sistema da DPO.
+- **Tailwind CSS:** Estilização rápida e responsiva, garantindo que o módulo se integre visualmente aos padrões internos.
+- **vue-pdf:** Renderização interativa do contrato e das marcações diretamente no navegador do auditor.
 
-1. OCR Local com foco em privacidade e segurança
-
-Utilização de um modelo de OCR executado integralmente no ambiente local da organização, permitindo a extração de informações de documentos sem a necessidade de enviar dados sensíveis para serviços externos.
-
-Essa abordagem reduz a exposição das informações, aumenta o controle sobre os dados processados e facilita a adoção de políticas internas de segurança, privacidade e governança, contribuindo para a adequação aos requisitos da LGPD.
-
-2. LLM Local para compreensão e busca semântica
-
-Utilização de um modelo de linguagem pré-treinado (LLM) executado localmente, permitindo compreender o contexto das informações extraídas e realizar buscas semânticas mais precisas.
-
-O modelo poderá relacionar informações, interpretar diferentes formas de consulta e identificar conteúdos relevantes mesmo quando os termos utilizados pelo usuário não correspondem exatamente aos dados armazenados.
-
-A execução local também contribui para a segurança e confidencialidade das informações, evitando o compartilhamento dos dados processados com provedores externos.
-
-3. Interface simples e intuitiva
-
-Desenvolvimento de uma interface objetiva e de fácil utilização, com foco na análise e exploração dos dados.
-
-A solução deverá priorizar uma experiência de uso simples, permitindo que os usuários realizem consultas, encontrem informações relevantes e analisem os resultados sem a necessidade de conhecimentos técnicos avançados.
-
-4. Processamento integrado e seguro
-
-Integração entre OCR, armazenamento, processamento de linguagem e busca semântica em um fluxo único, permitindo transformar documentos não estruturados em informações pesquisáveis e analisáveis.
-
-Toda a arquitetura será projetada priorizando segurança, privacidade, rastreabilidade e controle dos dados, mantendo o processamento dentro do ambiente definido pela organização.
-
-Diferencial da proposta:
-
-Como diferencial da proposta, a solução será projetada para operar sobre uma infraestrutura local (on-premises), mantendo o processamento e o armazenamento dos dados dentro do ambiente controlado pela organização.
-Essa abordagem proporciona maior segurança, privacidade e governança, reduzindo a dependência de serviços externos e evitando a necessidade de transferência de dados sensíveis para ambientes de terceiros.
-A infraestrutura local permite ainda maior controle sobre:
-Armazenamento e processamento dos dados;
-Acesso às informações e permissões dos usuários;
-Políticas de segurança e governança;
-Monitoramento e rastreabilidade das operações;
-Disponibilidade e continuidade do serviço;
-Proteção de informações sensíveis e confidenciais.
+### Backend & Processamento de Documentos
+- **PyMuPDF:** Manipulação de alta performance para ler PDFs, encontrar coordenadas exatas no texto e injetar as marcações visuais (highlights) no arquivo final.
+- **Pytesseract (OCR):** Motor integrado para ler e extrair textos de documentos escaneados.
+- **LangChain:** Framework responsável pela busca semântica, processando o contexto desejado pelo auditor com o uso de modelos de linguagem (LLMs).
